@@ -100,7 +100,8 @@ export default class TSDecoder extends stream.Writable {
             log.warn("TSDecoder#%d respawning because dead (count=%d)", this._id, this._deadCount);
         }
 
-        const proc = this._process = child_process.spawn(this._command);
+        const [bin, ...args] = this._command.split(" ");
+        const proc = this._process = child_process.spawn(bin, args);
 
         proc.once("close", (code, signal) => {
             log.info(
